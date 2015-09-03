@@ -2,7 +2,7 @@
 
 angular.module('outstanding.pages.landing', [
     'outstanding.calendar',
-    'outstanding.details',
+    'outstanding.date_details',
     'outstanding.uploader',
     'ui.router'
 ])

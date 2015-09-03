@@ -1,8 +1,8 @@
 'use strict';
 
-angular.module('outstanding.details', [])
+angular.module('outstanding.date_details', [])
 
-    .directive('details', function () {
+    .directive('date_details', function () {
         return {
             restrict: 'E',
             replace: true,

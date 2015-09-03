@@ -25,6 +25,33 @@ angular.module('outstanding', [
 
 'use strict';
 
+angular.module('outstanding.pages.landing', [
+    'outstanding.calendar',
+    'outstanding.date_details',
+    'outstanding.uploader',
+    'ui.router'
+])
+
+    .config(['$stateProvider', function ($stateProvider) {
+
+        $stateProvider
+            .state('landing', {
+                url: '/landing',
+                templateUrl: 'landing/landing.html',
+                controller: 'LandingPageCtrl'
+            })
+        ;
+    }])
+
+    .controller('LandingPageCtrl', ['$scope', function ($scope) {
+
+        console.log('landing');
+        
+    }])
+;
+
+'use strict';
+
 angular.module('outstanding.calendar', [])
 
     .directive('calendar', function () {
@@ -41,9 +68,9 @@ angular.module('outstanding.calendar', [])
 
 'use strict';
 
-angular.module('outstanding.details', [])
+angular.module('outstanding.date_details', [])
 
-    .directive('details', function () {
+    .directive('date_details', function () {
         return {
             restrict: 'E',
             replace: true,
@@ -229,31 +256,4 @@ angular.module('outstanding.uploader', [])
         };
     })
 
-;
-
-'use strict';
-
-angular.module('outstanding.pages.landing', [
-    'outstanding.calendar',
-    'outstanding.details',
-    'outstanding.uploader',
-    'ui.router'
-])
-
-    .config(['$stateProvider', function ($stateProvider) {
-
-        $stateProvider
-            .state('landing', {
-                url: '/landing',
-                templateUrl: 'landing/landing.html',
-                controller: 'LandingPageCtrl'
-            })
-        ;
-    }])
-
-    .controller('LandingPageCtrl', ['$scope', function ($scope) {
-
-        console.log('landing');
-        
-    }])
 ;
