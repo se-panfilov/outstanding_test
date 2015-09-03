@@ -188,7 +188,7 @@ gulp.task('vendor_css', function () {
 gulp.task('watch', function () {
     var watch = require('gulp-watch');
 
-    gulp.watch(src.jade, ['jade_static_main']);
+    gulp.watch(src.jade, ['jade']);
     gulp.watch(src.stylesDirs, ['stylus']);
     gulp.watch([src.jsDir], ['js']);
 });

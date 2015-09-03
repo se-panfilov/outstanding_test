@@ -22,3 +22,4 @@ angular.module('outstanding', [
         $urlRouterProvider.otherwise('/landing');
     }])
 ;
+
