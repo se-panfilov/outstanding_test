@@ -1,8 +1,7 @@
 'use strict';
 
-
 var gulp = require('gulp'), concat, rename, uglify, jade, sourcemaps, changed, minifyHTML, stylus,
-    minifyCss, nib, jshint, buddyjs, htmlhint, templateCache, ngAnnotate, connect;
+    minifyCss, nib, jshint, buddyjs, htmlhint, templateCache, ngAnnotate, connect, concatVendorCss;
 
 var src = {
     stylesDirs: [
@@ -13,11 +12,11 @@ var src = {
         '*.styl'
     ],
     jade: [
-        'index.jade',
         'src/pages/**/*.jade',
         'src/partials/**/*.jade',
         'src/modules/**/*.jade'
     ],
+    jadeIndex: './index.jade',
     jsDir: 'src/**/*.js'
 };
 
@@ -111,12 +110,26 @@ gulp.task('jade', function () {
             spare: true
         }))
         .pipe(templateCache({
-            module: 'app.templates',
+            module: 'outstanding.templates',
             standalone: true
         }))
         .pipe(concat('app_templates.js'))
         .pipe(gulp.dest(dest.dist))
+});
 
+gulp.task('jade_index', function () {
+    changed = changed || require('gulp-changed');
+    minifyHTML = minifyHTML || require('gulp-minify-html');
+    jade = jade || require('gulp-jade');
+
+    return gulp.src(src.jadeIndex)
+        .pipe(changed(dest.staticDir, {extension: '.html'}))
+        .pipe(jade({pretty: false}))
+        .pipe(minifyHTML({
+            empty: true,
+            spare: true
+        }))
+        .pipe(gulp.dest('./'));
 });
 
 gulp.task('stylus', function () {
@@ -160,7 +173,11 @@ gulp.task('vendor_js', function () {
     concat = concat || require('gulp-concat');
 
     return gulp.src([
-        //'libs/bower_components/angular/angular.js'
+        'bower_components/angular/angular.js',
+        'bower_components/angular-animate/angular-animate.js',
+        'bower_components/angular-loading-bar/build/loading-bar.js',
+        'bower_components/angular-ui-router/release/angular-ui-router.js',
+        'bower_components/angular-ui-router-anim-in-out/anim-in-out.js'
     ])
         .pipe(concat('vendor.js'))
         .pipe(gulp.dest(dest.dist))
@@ -173,15 +190,15 @@ gulp.task('vendor_js', function () {
 
 gulp.task('vendor_css', function () {
     minifyCss = minifyCss || require('gulp-minify-css');
-    var concatVendorCss = require('gulp-concat-css');
+    concatVendorCss = require('gulp-concat-css');
 
     gulp.src([
-        'libs/bower_components/bootstrap/dist/css/bootstrap.min.css',
-        'libs/bower_components/font-awesome/css/font-awesome.min.css',
-        'libs/bower_components/angular-loading-bar/build/loading-bar.min.css'
+        'bower_components/bootswatch/paper/bootstrap.min.css',
+        'bower_components/font-awesome/css/font-awesome.min.css',
+        'bower_components/angular-loading-bar/build/loading-bar.min.css'
     ], {base: 'dist'})
         .pipe(concatVendorCss('vendor.min.css'))
-        .pipe(minifyCss())
+        //.pipe(minifyCss())
         .pipe(gulp.dest(dest.dist));
 });
 
@@ -189,6 +206,7 @@ gulp.task('watch', function () {
     var watch = require('gulp-watch');
 
     gulp.watch(src.jade, ['jade']);
+    gulp.watch(src.jadeIndex, ['jade_index']);
     gulp.watch(src.stylesDirs, ['stylus']);
     gulp.watch([src.jsDir], ['js']);
 });
@@ -200,6 +218,7 @@ gulp.task('build_vendor', function () {
 });
 
 gulp.task('build', function () {
+    gulp.start('jade_index');
     gulp.start('jade');
     gulp.start('js');
     gulp.start('stylus');
