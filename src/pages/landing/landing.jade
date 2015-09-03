@@ -1,25 +1,5 @@
 .landing_page
     .container
-        section.uploader
-            button.btn.btn-success(type="button")
-                i.fa.fa-upload
-                | &nbsp;
-                | Upload
-            h4 Outstanding
-        section.calendar
-            .calendar_nav
-            .calendar_dates
-        section.details
-            .selected_date
-            .dues_count
-            .total_amount
-            table.table
-                tr
-                    th Contract
-                    th Contract
-                    th Contract
-                tr(ng-repeat="c in contracts")
-                    td
-                        span(ng-bind="c.number")
-                        span(ng-bind="c.amount")
-                        span(ng-bind="c.time")
+        uploader
+        calendar
+        details

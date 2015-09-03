@@ -1,0 +1,14 @@
+section.details(aria-label="Selected date details")
+    .selected_date
+    .dues_count
+    .total_amount
+    table.table
+        tr
+            th Contract
+            th Amount
+            th Time
+        tr(ng-repeat="c in contracts")
+            td
+                span(ng-bind="c.number")
+                span(ng-bind="c.amount")
+                span(ng-bind="c.time")
