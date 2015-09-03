@@ -1,0 +1,23 @@
+{
+  "name": "outstanding",
+  "version": "0.0.0",
+  "private": true,
+  "description": "just a test project",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/se-panfilov/outstanding_test.git"
+  },
+  "author": "S.Panfilov <se-panfilov@ya.ru> (https://se-panfilov.github.io)",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/se-panfilov/outstanding_test/issues"
+  },
+  "keywords": [],
+  "homepage": "https://github.com/se-panfilov/outstanding_test",
+  "devDependencies": {},
+  "dependencies": {}
+}
