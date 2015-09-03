@@ -137,7 +137,7 @@ gulp.task('stylus', function () {
 
 gulp.task('purify_css', function () {
     return purifyCss({
-        src: ['index.html', 'maintenance.html', 'dist/app.min.js', 'dist/app_templates.js', 'dist/vendor.min.js'],
+        src: ['index.html', 'dist/app.min.js', 'dist/app_templates.js', 'dist/vendor.min.js'],
         css: ['dist/vendor.min.css'],
         output: 'dist/vendor.purified.min.css'
     });
