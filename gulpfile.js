@@ -1,5 +1,8 @@
+'use strict';
+
+
 var gulp = require('gulp'), concat, rename, uglify, jade, sourcemaps, changed, minifyHTML, stylus,
-    minifyCss, nib, jshint, buddyjs, htmlhint, templateCache, ngAnnotate;
+    minifyCss, nib, jshint, buddyjs, htmlhint, templateCache, ngAnnotate, connect;
 
 var src = {
     stylesDirs: [
@@ -206,4 +209,14 @@ gulp.task('build', function () {
 gulp.task('default', function () {
     gulp.start('build');
     gulp.start('watch');
+});
+
+gulp.task('webserver', function () {
+    connect = connect || require('gulp-connect');
+
+    connect.server({
+        root: [__dirname],
+        port: 8001,
+        livereload: true
+    });
 });
