@@ -64,11 +64,11 @@ angular.module('outstanding.uploader', [])
             restrict: 'E',
             replace: true,
             templateUrl: 'uploader/uploader.html',
-            scope: {
-                fileReader: "="
-            },
-            link: function (scope, element) {
-
+            link: function (scope) {
+                scope.$watch('fileContent', function (value) {
+                        console.info(value);
+                    }, true
+                );
             }
         };
     })
@@ -78,11 +78,12 @@ angular.module('outstanding.uploader', [])
             scope: {
                 fileReader: "="
             },
-            link: function (scope, element) {
+            link: function (scope, element, attrs) {
                 element.on('change', function (changeEvent) {
                     var files = changeEvent.target.files;
                     if (files.length) {
                         var r = new FileReader();
+
                         r.onload = function (e) {
                             var contents = e.target.result;
                             scope.$apply(function () {
