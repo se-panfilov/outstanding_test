@@ -113,7 +113,7 @@ angular.module('outstanding.calendar', [])
                 };
 
                 scope.$watch('source', function (value, oldValue) {
-                        if (value || value === oldValue) return;
+                        if (!value || value === oldValue) return;
                         _init(value);
                     }, true
                 );

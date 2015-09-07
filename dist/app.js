@@ -28,15 +28,27 @@ angular.module('outstanding', [
 
 angular.module('outstanding.data', [])
 
-    .factory('DataFactory', function () {
+    .factory('DataFactory', ['$rootScope', function ($rootScope) {
 
         var exports = {
             data: [],
-            selectedDate: null
+            parsedData: [],
+            selectedDate: null,
+            parseData: function (data) {
+                
+            }
         };
 
+        $rootScope.$watch(function () {
+            return exports.data;
+        }, function watchCallback(value, oldValue) {
+            if (!value || value === oldValue) return;
+
+            exports.parsedData = exports.parseData(value);
+        });
+
         return exports;
-    })
+    }])
 
 ;
 
@@ -155,7 +167,7 @@ angular.module('outstanding.calendar', [])
                 };
 
                 scope.$watch('source', function (value, oldValue) {
-                        if (value || value === oldValue) return;
+                        if (!value || value === oldValue) return;
                         _init(value);
                     }, true
                 );
