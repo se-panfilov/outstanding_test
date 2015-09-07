@@ -99,6 +99,8 @@ angular.module('outstanding.calendar', [])
                     }
                 }
 
+                exports.years = years;
+
             }
         };
 
@@ -109,16 +111,13 @@ angular.module('outstanding.calendar', [])
         return {
             restrict: 'E',
             replace: true,
+            templateUrl: 'calendar/calendar.html',
             scope: {
                 source: '=',
                 selected: '=',
                 isUtc: '='
             },
             link: function (scope) {
-
-                scope.calendarData = {
-                    monthsList: []
-                };
 
                 scope.$watch('source', function (value, oldValue) {
                         if (!value || value === oldValue) return;

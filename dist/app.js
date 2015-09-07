@@ -190,6 +190,8 @@ angular.module('outstanding.calendar', [])
                     }
                 }
 
+                exports.years = years;
+
             }
         };
 
@@ -200,16 +202,13 @@ angular.module('outstanding.calendar', [])
         return {
             restrict: 'E',
             replace: true,
+            templateUrl: 'calendar/calendar.html',
             scope: {
                 source: '=',
                 selected: '=',
                 isUtc: '='
             },
             link: function (scope) {
-
-                scope.calendarData = {
-                    monthsList: []
-                };
 
                 scope.$watch('source', function (value, oldValue) {
                         if (!value || value === oldValue) return;
@@ -229,36 +228,6 @@ angular.module('outstanding.calendar', [])
         };
     }])
 
-;
-
-'use strict';
-
-angular.module('outstanding.pages.landing', [
-    'outstanding.calendar',
-    'outstanding.date_details',
-    'outstanding.uploader',
-    'ui.router'
-])
-
-    .config(['$stateProvider', function ($stateProvider) {
-
-        $stateProvider
-            .state('landing', {
-                url: '/landing',
-                templateUrl: 'landing/landing.html',
-                controller: 'LandingPageCtrl'
-            })
-        ;
-    }])
-
-    .controller('LandingPageCtrl', ['$scope', 'DataFactory', function ($scope, DataFactory) {
-
-        (function _init() {
-            $scope.DataFactory = DataFactory;
-            $scope.isUtc = false;
-        })();
-
-    }])
 ;
 
 'use strict';
@@ -325,4 +294,34 @@ angular.module('outstanding.uploader', [])
     })
 
 
+;
+
+'use strict';
+
+angular.module('outstanding.pages.landing', [
+    'outstanding.calendar',
+    'outstanding.date_details',
+    'outstanding.uploader',
+    'ui.router'
+])
+
+    .config(['$stateProvider', function ($stateProvider) {
+
+        $stateProvider
+            .state('landing', {
+                url: '/landing',
+                templateUrl: 'landing/landing.html',
+                controller: 'LandingPageCtrl'
+            })
+        ;
+    }])
+
+    .controller('LandingPageCtrl', ['$scope', 'DataFactory', function ($scope, DataFactory) {
+
+        (function _init() {
+            $scope.DataFactory = DataFactory;
+            $scope.isUtc = false;
+        })();
+
+    }])
 ;
