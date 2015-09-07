@@ -36,6 +36,9 @@ angular.module('outstanding.data', [])
                 }
                 return result;
             },
+            getRow: function (parsedData, rowNum) {
+                return parsedData[rowNum];//TODO (S.Panfilov) unused
+            },
             getContractCol: function (parsedData, isExcludeTitle) {
                 return exports.getCol(parsedData, COLS.CONTRACT, isExcludeTitle);
             },
@@ -47,6 +50,29 @@ angular.module('outstanding.data', [])
             },
             getAmountCol: function (parsedData, isExcludeTitle) {
                 return exports.getCol(parsedData, COLS.AMOUNT, isExcludeTitle);
+            },
+            getRowByDateString: function (dateStr) {
+                var start = 1; //exclude titles
+                for (var i = start; i < exports.parsedData.length; i++) {
+                    var row = exports.parsedData[i];
+                    if (row[COLS.DATE] === dateStr){
+                        return row;
+                    }
+                }
+
+                //TODO (S.Panfilov) throw error here
+            },
+            getContractVal: function (row) {
+                return row[COLS.CONTRACT];
+            },
+            getDateVal: function (row) {
+                return row[COLS.DATE];
+            },
+            getTimeVal: function (row) {
+                return row[COLS.TIME];
+            },
+            getAmountVal: function (row) {
+                return row[COLS.AMOUNT];
             }
         };
 
