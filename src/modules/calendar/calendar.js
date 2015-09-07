@@ -4,6 +4,36 @@ angular.module('outstanding.calendar', [])
 
     .factory('CalendarFactory', function () {
 
+
+        function _getDays(datetime) {
+
+            var result = [];
+
+            for (var i = from; i <= to; i++) {
+                result.push({num: i});
+            }
+
+            return result;
+        }
+
+        function _getMonthNumber(datetime) {
+            var date = new Date(datetime);
+            if (!exports.isUTC) {
+                return date.getMonth();
+            } else {
+                return date.getUTCMonth();
+            }
+        }
+
+        function getMonth(datetime) {
+            var month = {
+                number: _getMonthNumber(datetime),
+                days: _getDays(datetime)
+            };
+
+            return month;
+        }
+
         var exports = {
             dates: [],
             months: [],
@@ -17,15 +47,7 @@ angular.module('outstanding.calendar', [])
                 //make datetime from strings
                 //set export.dates = [123123, 1232132, 3432432]
             },
-            getMonthNumber: function (datetime) {
-                var date = new Date(datetime);
-                if (!exports.isUTC) {
-                    return date.getMonth();
-                } else {
-                    return date.getUTCMonth();
-                }
-            },
-            getMonth: function (datetime) {
+            makeMonthsList: function () {
 
             }
         };
