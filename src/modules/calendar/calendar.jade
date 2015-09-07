@@ -1,7 +1,7 @@
 section.calendar(aria-label="Calendar")
-    .calendar_nav
-        button.btn.btn-default(type="button", aria-label="Go prev month")
-            i.fa.fa-back
-        button.btn.btn-default(type="button", aria-label="Go next month")
-            i.fa.fa-forward
-    .calendar_dates
+    .years(ng-repeat="y in CalendarFactory.years track by $index")
+        h3(ng-bind="$index", aria-label="Year")
+        .month(ng-repeat="m in y track by $index")
+            h4(ng-bind="$index", aria-label="Month")
+        .month(ng-repeat="d in m track by $index")
+            span(ng-bind="$index")
