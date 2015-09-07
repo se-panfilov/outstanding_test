@@ -2,7 +2,7 @@
 
 angular.module('outstanding.calendar', [])
 
-    .factory('CalendarFactory', function () {
+    .factory('CalendarFactory', function (DataFactory) {
 
         function _getDaysInMonth(month, year) {
             var date = new Date(year, month + 1, 0);
@@ -59,7 +59,9 @@ angular.module('outstanding.calendar', [])
                 var datetime = dateTimesList[i];
                 if (yearNum === _getYearNumber(datetime)) {
                     var monthNum = _getMonthNumber(datetime);
-                    result[monthNum] = _getDays(monthNum, yearNum);
+                    if (!result[monthNum]) {
+                        result[monthNum] = _getDays(monthNum, yearNum);
+                    }
                 }
             }
 
@@ -75,10 +77,16 @@ angular.module('outstanding.calendar', [])
                 exports.isUTC = isUTC || false;
             },
             setDates: function (data) {
-                //TODO (S.Panfilov)
-                //get dates col
-                //make datetime from strings
-                //set export.dates = [123123, 1232132, 3432432]
+                exports.dates = [];
+                var datesCol = DataFactory.getDateCol(data, true);
+                var datesRegexp = new RegExp(/\d+/g);
+
+                for (var i = 0; i < datesCol.length; i++) {
+                    var dateString = datesCol[i];
+                    var parsed = dateString.match(datesRegexp);
+                    var date = new Date(parsed[2], parsed[1] - 1, parsed[0]);
+                    exports.dates.push(date.getTime());
+                }
             },
             makeYearsList: function () {
                 var years = {};
@@ -87,7 +95,7 @@ angular.module('outstanding.calendar', [])
                     var datetime = exports.dates[i];
                     var yearNum = _getYearNumber(datetime);
                     if (!years[yearNum]) { //TODO (S.Panfilov) what if year exist?
-                        years[yearNum] = _getMonthList(exports.dates);
+                        years[yearNum] = _getMonthList(exports.dates, yearNum);
                     }
                 }
 
@@ -115,7 +123,7 @@ angular.module('outstanding.calendar', [])
                 scope.$watch('source', function (value, oldValue) {
                         if (!value || value === oldValue) return;
                         _init(value);
-                    }, true
+                    }
                 );
 
                 function _init(sourceData) {

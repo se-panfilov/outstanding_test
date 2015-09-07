@@ -26,35 +26,37 @@ angular.module('outstanding.data', [])
                     [56556, '04/06/2016', '09:51:21.565', 9385.19]
                 ]
             },
-            getCol: function (colNum) {
+            getCol: function (parsedData, colNum, isExcludeTitle) {
                 var result = [];
-                for (var i = 0; i < exports.parsedData.length; i++) {
-                    var row = exports.parsedData[i];
+                var start = (isExcludeTitle) ? 1 : 0;
+
+                for (var i = start; i < parsedData.length; i++) {
+                    var row = parsedData[i];
                     result.push(row[colNum]);
                 }
                 return result;
             },
-            getContractCol: function () {
-                return exports.getCol(COLS.CONTRACT);
+            getContractCol: function (parsedData, isExcludeTitle) {
+                return exports.getCol(parsedData, COLS.CONTRACT, isExcludeTitle);
             },
-            getDateCol: function () {
-                return exports.getCol(COLS.DATE);
+            getDateCol: function (parsedData, isExcludeTitle) {
+                return exports.getCol(parsedData, COLS.DATE, isExcludeTitle);
             },
-            getTimeCol: function () {
-                return exports.getCol(COLS.TIME);
+            getTimeCol: function (parsedData, isExcludeTitle) {
+                return exports.getCol(parsedData, COLS.TIME, isExcludeTitle);
             },
-            getAmountCol: function () {
-                return exports.getCol(COLS.AMOUNT);
+            getAmountCol: function (parsedData, isExcludeTitle) {
+                return exports.getCol(parsedData, COLS.AMOUNT, isExcludeTitle);
             }
         };
 
         $rootScope.$watch(function () {
             return exports.data;
-        }, function watchCallback(value, oldValue) {
+        }, function (value, oldValue) {
             if (!value || value === oldValue) return;
 
             exports.parsedData = exports.parseData(value);
-        });
+        }, true);
 
         return exports;
     })
