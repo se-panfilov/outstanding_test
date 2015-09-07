@@ -21,7 +21,6 @@ var src = {
 };
 
 var dest = {
-    staticDir: 'static',
     dist: 'dist',
     templatesDir: 'templates'
 };
@@ -56,7 +55,7 @@ gulp.task('htmlhint', function () {
     htmlhint = htmlhint || require("gulp-htmlhint");
     jade = jade || require('gulp-jade');
 
-    var html = src.jade.staticDirs.templates.concat(src.jade.staticDirs.main);
+    var html = src.jade.concat(src.jadeIndex);
     html.push(src.jade.templatesDir);
     return gulp.src(html)
         .pipe(jade({pretty: false}))
@@ -83,7 +82,7 @@ gulp.task('js', function () {
     concat = concat || require('gulp-concat');
 
     return gulp.src([src.jsDir])
-        .pipe(changed(dest.staticDir))
+        .pipe(changed(dest.dist))
         .pipe(concat('app.js'))
         .pipe(ngAnnotate({remove: true, add: true, single_quotes: true}))
         .pipe(gulp.dest(dest.dist))
@@ -103,7 +102,7 @@ gulp.task('jade', function () {
     concat = concat || require('gulp-concat');
 
     return gulp.src(src.jade)
-        .pipe(changed(dest.staticDir, {extension: '.html'}))
+        .pipe(changed(dest.dist, {extension: '.html'}))
         .pipe(jade({pretty: false}))
         .pipe(minifyHTML({
             empty: true,
@@ -123,7 +122,7 @@ gulp.task('jade_index', function () {
     jade = jade || require('gulp-jade');
 
     return gulp.src(src.jadeIndex)
-        .pipe(changed(dest.staticDir, {extension: '.html'}))
+        .pipe(changed('./', {extension: '.html'}))
         .pipe(jade({pretty: false}))
         .pipe(minifyHTML({
             empty: true,
@@ -139,7 +138,7 @@ gulp.task('stylus', function () {
     changed = changed || require('gulp-changed');
     concat = concat || require('gulp-concat');
 
-    return gulp.src(src.stylesDirs, {base: 'static'})
+    return gulp.src(src.stylesDirs)
         //TODO (S.Panfilov) check changed
         .pipe(changed(dest.dist))
         .pipe(concat('app.min.styl'))

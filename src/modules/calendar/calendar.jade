@@ -1,7 +1,9 @@
 section.calendar(aria-label="Calendar")
-    .years(ng-repeat="(year, monthList) in CalendarFactory.years track by $index")
+    .calendar_years(ng-repeat="(year, monthList) in CalendarFactory.years track by $index")
         h3(ng-bind="year", aria-label="Year")
-        .months(ng-repeat="(month, daysList) in monthList track by $index")
+        .calendar_months(ng-repeat="(month, daysList) in monthList track by $index")
             h4(ng-bind="getMonthName(month)", aria-label="Month")
-            span.days(ng-repeat="(day, day_info) in daysList track by $index")
-                span(ng-bind="day")
+            span.calendar_days
+                span.calendar_day(ng-repeat="(day, day_info) in daysList track by $index", ng-bind="day")
+
+
