@@ -91,6 +91,36 @@ angular.module('outstanding.data', [])
 
 'use strict';
 
+angular.module('outstanding.pages.landing', [
+    'outstanding.calendar',
+    'outstanding.date_details',
+    'outstanding.uploader',
+    'ui.router'
+])
+
+    .config(['$stateProvider', function ($stateProvider) {
+
+        $stateProvider
+            .state('landing', {
+                url: '/landing',
+                templateUrl: 'landing/landing.html',
+                controller: 'LandingPageCtrl'
+            })
+        ;
+    }])
+
+    .controller('LandingPageCtrl', ['$scope', 'DataFactory', function ($scope, DataFactory) {
+
+        (function _init() {
+            $scope.DataFactory = DataFactory;
+            $scope.isUtc = false;
+        })();
+
+    }])
+;
+
+'use strict';
+
 angular.module('outstanding.calendar', [])
 
     .factory('CalendarFactory', ['DataFactory', function (DataFactory) {
@@ -210,6 +240,25 @@ angular.module('outstanding.calendar', [])
             },
             link: function (scope) {
 
+                var monthNamesList = [
+                    'January',
+                    'February',
+                    'March',
+                    'April',
+                    'May',
+                    'June',
+                    'July',
+                    'August',
+                    'September',
+                    'October',
+                    'November',
+                    'December'
+                ];
+
+                scope.getMonthName = function (num) {
+                    return monthNamesList[num - 1];
+                };
+
                 scope.$watch('source', function (value, oldValue) {
                         if (!value || value === oldValue) return;
                         _init(value);
@@ -294,34 +343,4 @@ angular.module('outstanding.uploader', [])
     })
 
 
-;
-
-'use strict';
-
-angular.module('outstanding.pages.landing', [
-    'outstanding.calendar',
-    'outstanding.date_details',
-    'outstanding.uploader',
-    'ui.router'
-])
-
-    .config(['$stateProvider', function ($stateProvider) {
-
-        $stateProvider
-            .state('landing', {
-                url: '/landing',
-                templateUrl: 'landing/landing.html',
-                controller: 'LandingPageCtrl'
-            })
-        ;
-    }])
-
-    .controller('LandingPageCtrl', ['$scope', 'DataFactory', function ($scope, DataFactory) {
-
-        (function _init() {
-            $scope.DataFactory = DataFactory;
-            $scope.isUtc = false;
-        })();
-
-    }])
 ;

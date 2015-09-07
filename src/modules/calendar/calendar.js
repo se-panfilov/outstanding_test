@@ -119,6 +119,25 @@ angular.module('outstanding.calendar', [])
             },
             link: function (scope) {
 
+                var monthNamesList = [
+                    'January',
+                    'February',
+                    'March',
+                    'April',
+                    'May',
+                    'June',
+                    'July',
+                    'August',
+                    'September',
+                    'October',
+                    'November',
+                    'December'
+                ];
+
+                scope.getMonthName = function (num) {
+                    return monthNamesList[num - 1];
+                };
+
                 scope.$watch('source', function (value, oldValue) {
                         if (!value || value === oldValue) return;
                         _init(value);
