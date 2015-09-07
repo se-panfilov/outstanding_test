@@ -42,48 +42,69 @@ angular.module('outstanding.data', [])
 
 'use strict';
 
-angular.module('outstanding.pages.landing', [
-    'outstanding.calendar',
-    'outstanding.date_details',
-    'outstanding.uploader',
-    'ui.router'
-])
-
-    .config(['$stateProvider', function ($stateProvider) {
-
-        $stateProvider
-            .state('landing', {
-                url: '/landing',
-                templateUrl: 'landing/landing.html',
-                controller: 'LandingPageCtrl'
-            })
-        ;
-    }])
-
-    .controller('LandingPageCtrl', ['$scope', 'DataFactory', function ($scope, DataFactory) {
-
-        $scope.data = {};
-
-        (function _init() {
-            $scope.DataFactory = DataFactory;
-        })();
-
-    }])
-;
-
-'use strict';
-
 angular.module('outstanding.calendar', [])
 
-    .directive('calendar', function () {
+    .factory('CalendarFactory', function () {
+
+        var exports = {
+            dates: [],
+            months: [],
+            isUTC: false,
+            setUTC: function (isUTC) {
+                exports.isUTC = isUTC || false;
+            },
+            setDates: function (data) {
+                //TODO (S.Panfilov)
+                //get dates col
+                //make datetime from strings
+                //set export.dates = [123123, 1232132, 3432432]
+            },
+            getMonthNumber: function (datetime) {
+                var date = new Date(datetime);
+                if (!exports.isUTC) {
+                    return date.getMonth();
+                } else {
+                    return date.getUTCMonth();
+                }
+            },
+            getMonth: function (datetime) {
+
+            }
+        };
+
+        return exports;
+    })
+
+    .directive('calendar', ['CalendarFactory', function (CalendarFactory) {
         return {
             restrict: 'E',
             replace: true,
-            link: function (scope, elem) {
-                console.log('calendar');
+            scope: {
+                source: '=',
+                selected: '=',
+                isUtc: '='
+            },
+            link: function (scope) {
+
+                scope.calendarData = {
+                    monthsList: []
+                };
+
+                scope.$watch('source', function (value, oldValue) {
+                        if (value || value === oldValue) return;
+                        _init(value);
+                    }, true
+                );
+
+                function _init(sourceData) {
+                    CalendarFactory.setUTC(scope.isUtc);
+                    CalendarFactory.setDates(sourceData);
+                }
+
+
             }
         };
-    })
+    }])
 
 ;
 
@@ -151,4 +172,34 @@ angular.module('outstanding.uploader', [])
     })
 
 
+;
+
+'use strict';
+
+angular.module('outstanding.pages.landing', [
+    'outstanding.calendar',
+    'outstanding.date_details',
+    'outstanding.uploader',
+    'ui.router'
+])
+
+    .config(['$stateProvider', function ($stateProvider) {
+
+        $stateProvider
+            .state('landing', {
+                url: '/landing',
+                templateUrl: 'landing/landing.html',
+                controller: 'LandingPageCtrl'
+            })
+        ;
+    }])
+
+    .controller('LandingPageCtrl', ['$scope', 'DataFactory', function ($scope, DataFactory) {
+
+        (function _init() {
+            $scope.DataFactory = DataFactory;
+            $scope.isUtc = false;
+        })();
+
+    }])
 ;

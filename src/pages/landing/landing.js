@@ -20,10 +20,9 @@ angular.module('outstanding.pages.landing', [
 
     .controller('LandingPageCtrl', function ($scope, DataFactory) {
 
-        $scope.data = {};
-
         (function _init() {
             $scope.DataFactory = DataFactory;
+            $scope.isUtc = false;
         })();
 
     })
