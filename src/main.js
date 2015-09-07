@@ -8,6 +8,7 @@ angular.module('outstanding', [
     'outstanding.pages.landing',
 
     //factories
+    'outstanding.data',
 
     //external libs
     'ngAnimate',

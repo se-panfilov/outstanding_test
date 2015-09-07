@@ -8,6 +8,7 @@ angular.module('outstanding', [
     'outstanding.pages.landing',
 
     //factories
+    'outstanding.data',
 
     //external libs
     'ngAnimate',
@@ -20,6 +21,53 @@ angular.module('outstanding', [
 
     .config(['$stateProvider', '$urlRouterProvider', function ($stateProvider, $urlRouterProvider) {
         $urlRouterProvider.otherwise('/landing');
+    }])
+;
+
+'use strict';
+
+angular.module('outstanding.data', [])
+
+    .factory('DataFactory', function () {
+
+        var exports = {
+            data: [],
+            selectedDate: null
+        };
+
+        return exports;
+    })
+
+;
+
+'use strict';
+
+angular.module('outstanding.pages.landing', [
+    'outstanding.calendar',
+    'outstanding.date_details',
+    'outstanding.uploader',
+    'ui.router'
+])
+
+    .config(['$stateProvider', function ($stateProvider) {
+
+        $stateProvider
+            .state('landing', {
+                url: '/landing',
+                templateUrl: 'landing/landing.html',
+                controller: 'LandingPageCtrl'
+            })
+        ;
+    }])
+
+    .controller('LandingPageCtrl', ['$scope', 'DataFactory', function ($scope, DataFactory) {
+
+        $scope.data = {};
+
+        (function _init() {
+            $scope.DataFactory = DataFactory;
+        })();
+
     }])
 ;
 
@@ -63,10 +111,14 @@ angular.module('outstanding.uploader', [])
         return {
             restrict: 'E',
             replace: true,
+            scope: {
+                storage: '='
+            },
             templateUrl: 'uploader/uploader.html',
             link: function (scope) {
-                scope.$watch('fileContent', function (value) {
-                        console.info(value);
+                scope.$watch('fileContent', function (value, oldValue) {
+                        if (value === oldValue) return;
+                        scope.storage = value;
                     }, true
                 );
             }
@@ -78,7 +130,7 @@ angular.module('outstanding.uploader', [])
             scope: {
                 fileReader: "="
             },
-            link: function (scope, element, attrs) {
+            link: function (scope, element) {
                 element.on('change', function (changeEvent) {
                     var files = changeEvent.target.files;
                     if (files.length) {
@@ -99,31 +151,4 @@ angular.module('outstanding.uploader', [])
     })
 
 
-;
-
-'use strict';
-
-angular.module('outstanding.pages.landing', [
-    'outstanding.calendar',
-    'outstanding.date_details',
-    'outstanding.uploader',
-    'ui.router'
-])
-
-    .config(['$stateProvider', function ($stateProvider) {
-
-        $stateProvider
-            .state('landing', {
-                url: '/landing',
-                templateUrl: 'landing/landing.html',
-                controller: 'LandingPageCtrl'
-            })
-        ;
-    }])
-
-    .controller('LandingPageCtrl', ['$scope', function ($scope) {
-
-        console.log('landing');
-        
-    }])
 ;

@@ -18,9 +18,13 @@ angular.module('outstanding.pages.landing', [
         ;
     })
 
-    .controller('LandingPageCtrl', function ($scope) {
+    .controller('LandingPageCtrl', function ($scope, DataFactory) {
 
-        console.log('landing');
-        
+        $scope.data = {};
+
+        (function _init() {
+            $scope.DataFactory = DataFactory;
+        })();
+
     })
 ;

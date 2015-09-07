@@ -6,10 +6,14 @@ angular.module('outstanding.uploader', [])
         return {
             restrict: 'E',
             replace: true,
+            scope: {
+                storage: '='
+            },
             templateUrl: 'uploader/uploader.html',
             link: function (scope) {
-                scope.$watch('fileContent', function (value) {
-                        console.info(value);
+                scope.$watch('fileContent', function (value, oldValue) {
+                        if (value === oldValue) return;
+                        scope.storage = value;
                     }, true
                 );
             }
@@ -21,7 +25,7 @@ angular.module('outstanding.uploader', [])
             scope: {
                 fileReader: "="
             },
-            link: function (scope, element, attrs) {
+            link: function (scope, element) {
                 element.on('change', function (changeEvent) {
                     var files = changeEvent.target.files;
                     if (files.length) {

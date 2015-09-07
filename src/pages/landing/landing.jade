@@ -1,5 +1,5 @@
 .landing_page
     .container
-        uploader
-        calendar
-        date_details
+        uploader(storage="DataFactory.data")
+        calendar(source="DataFactory.data", selected="DataFactory.selectedDate")
+        date_details(source="DataFactory.selectedDate")
