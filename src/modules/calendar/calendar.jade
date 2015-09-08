@@ -8,8 +8,7 @@ section.calendar(aria-label="Calendar")
                     .calendar_day(ng-hide!="day_info.events.length > 0")
                         span(ng-bind="day")
                     .extended_calendar_day(ng-show!="day_info.events.length > 0")
-                        .day_info
-                            .total_days_dues(ng-bind="day_info.events.length")
-                            .total_days_amount(ng-bind="getTotalForDay(day_info.events, DAY_EVENT_FIELDS.AMOUNT)")
+                        .total_days_dues(ng-bind="day_info.events.length")
                         .day_num_container
-                            .day_num(ng-bind="day")
+                            span.day_num(ng-bind="day")
+                        .total_days_amount(ng-bind="getTotalForDay(day_info.events, DAY_EVENT_FIELDS.AMOUNT)")
