@@ -1,5 +1,5 @@
 .landing_page
     .container
         uploader.margin_top_big(storage="DataFactory.data")
-        date-details(source="DataFactory.selectedDate")
         calendar(source="DataFactory.parsedData", selected="DataFactory.selectedDate", is-utc="isUtc")
+        date-details(source="DataFactory.selectedDate")

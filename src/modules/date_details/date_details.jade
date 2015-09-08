@@ -1,23 +1,28 @@
 section.date_details(aria-label="Selected date details")
     h3.selected_date(ng-bind="source.day + ' ' + CalendarFactory.getMonthName(source.month) + ' ' + source.year ")
-    .dues_count(ng-hide="!source.data.events")
-        span Dues
-        | &nbsp;
-        span(ng-bind="source.data.events.length")
-    .total_amount
-        span(ng-bind="CalendarFactory.getTotalForDay(source.data.events, DAY_EVENT_FIELDS.AMOUNT)")
-    table.table.margin_top_big(ng-hide="!source.data.events")
-        tr
-            th #
-            th Contract
-            th Amount
-            th Time
-        tr(ng-repeat="e in source.data.events track by $index")
-            td
-                span(ng-bind="$index + 1")
-            td
-                span(ng-bind="e.contract")
-            td
-                span(ng-bind="e.amount")
-            td
-                span(ng-bind="e.time")
+    .normal_duties_body(ng-show="source.data.events")
+        h5.dues_count
+            | Dues:
+            | &nbsp;
+            span(ng-bind="source.data.events.length")
+        h5.total_amount
+            | Total Amount
+            | &nbsp;
+            span(ng-bind="CalendarFactory.getTotalForDay(source.data.events, DAY_EVENT_FIELDS.AMOUNT)")
+        table.table.margin_top_big(ng-hide="!source.data.events")
+            tr
+                th #
+                th Contract
+                th Amount
+                th Time
+            tr(ng-repeat="e in source.data.events track by $index")
+                td
+                    span(ng-bind="$index + 1")
+                td
+                    span(ng-bind="e.contract")
+                td
+                    span(ng-bind="e.amount")
+                td
+                    span(ng-bind="e.time")
+    .no_duties_body(ng-show="source.data && !source.data.events")
+        h5 No dues today
