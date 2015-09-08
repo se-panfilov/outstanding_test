@@ -136,6 +136,7 @@ angular.module('outstanding.calendar', [])
                     var dayNum = ('0' + _getDayNumber(datetime)).slice(-2);
                     var dateStr = dayNum + '/' + monthNum + '/' + yearNum;//A hack cause normally should be based on regexp
 
+                    //TODO (S.Panfilov) BUG: we cannot act like so (take strings by date), because of same date events
                     var row = DataFactory.getRowByDateString(dateStr);
                     var event = {};
 

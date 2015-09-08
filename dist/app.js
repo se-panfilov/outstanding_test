@@ -117,36 +117,6 @@ angular.module('outstanding.data', [])
 
 'use strict';
 
-angular.module('outstanding.pages.landing', [
-    'outstanding.calendar',
-    'outstanding.date_details',
-    'outstanding.uploader',
-    'ui.router'
-])
-
-    .config(['$stateProvider', function ($stateProvider) {
-
-        $stateProvider
-            .state('landing', {
-                url: '/landing',
-                templateUrl: 'landing/landing.html',
-                controller: 'LandingPageCtrl'
-            })
-        ;
-    }])
-
-    .controller('LandingPageCtrl', ['$scope', 'DataFactory', function ($scope, DataFactory) {
-
-        (function _init() {
-            $scope.DataFactory = DataFactory;
-            $scope.isUtc = false;
-        })();
-
-    }])
-;
-
-'use strict';
-
 angular.module('outstanding.calendar', [])
 
     .constant('DAY_EVENT_FIELDS', {
@@ -283,6 +253,7 @@ angular.module('outstanding.calendar', [])
                     var dayNum = ('0' + _getDayNumber(datetime)).slice(-2);
                     var dateStr = dayNum + '/' + monthNum + '/' + yearNum;//A hack cause normally should be based on regexp
 
+                    //TODO (S.Panfilov) BUG: we cannot act like so (take strings by date), because of same date events
                     var row = DataFactory.getRowByDateString(dateStr);
                     var event = {};
 
@@ -429,4 +400,34 @@ angular.module('outstanding.uploader', [])
     })
 
 
+;
+
+'use strict';
+
+angular.module('outstanding.pages.landing', [
+    'outstanding.calendar',
+    'outstanding.date_details',
+    'outstanding.uploader',
+    'ui.router'
+])
+
+    .config(['$stateProvider', function ($stateProvider) {
+
+        $stateProvider
+            .state('landing', {
+                url: '/landing',
+                templateUrl: 'landing/landing.html',
+                controller: 'LandingPageCtrl'
+            })
+        ;
+    }])
+
+    .controller('LandingPageCtrl', ['$scope', 'DataFactory', function ($scope, DataFactory) {
+
+        (function _init() {
+            $scope.DataFactory = DataFactory;
+            $scope.isUtc = false;
+        })();
+
+    }])
 ;
