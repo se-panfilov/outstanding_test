@@ -32,13 +32,17 @@ angular.module('outstanding.calendar', [])
             return result;
         }
 
-        function _getMonthNumber(datetime) {
+        function _getMonthNumber(datetime, isUserView) {
             var date = new Date(datetime);
+            var result;
             if (!exports.isUTC) {
-                return date.getMonth();
+                result = date.getMonth();
             } else {
-                return date.getUTCMonth();
+                result = date.getUTCMonth();
             }
+
+            result += (isUserView) ? 1 : 0;
+            return result;
         }
 
         function _getDayNumber(datetime) {
@@ -48,15 +52,6 @@ angular.module('outstanding.calendar', [])
             } else {
                 return date.getUTCDate();
             }
-        }
-
-        function getMonth(datetime) {
-            var month = {
-                number: _getMonthNumber(datetime),
-                days: _getDays(datetime)
-            };
-
-            return month;
         }
 
         function _getYearNumber(datetime) {
@@ -74,7 +69,7 @@ angular.module('outstanding.calendar', [])
             for (var i = 0; i < dateTimesList.length; i++) {
                 var datetime = dateTimesList[i];
                 if (yearNum === _getYearNumber(datetime)) {
-                    var monthNum = _getMonthNumber(datetime);
+                    var monthNum = _getMonthNumber(datetime, true);
                     if (!result[monthNum]) {
                         result[monthNum] = _getDays(monthNum, yearNum);
                     }
@@ -122,7 +117,7 @@ angular.module('outstanding.calendar', [])
                 for (var i = 0; i < exports.dates.length; i++) {
                     var datetime = exports.dates[i];
                     var yearNum = _getYearNumber(datetime);//TODO (S.Panfilov) bug with -1/+1 month number
-                    var monthNum = ('0' + (_getMonthNumber(datetime) + 1)).slice(-2);
+                    var monthNum = ('0' + _getMonthNumber(datetime, true)).slice(-2);
                     var dayNum = ('0' + _getDayNumber(datetime)).slice(-2);
                     var dateStr = dayNum + '/' + monthNum + '/' + yearNum;//A hack cause normally should be based on regexp
 

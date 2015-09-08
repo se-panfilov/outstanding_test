@@ -2,13 +2,33 @@
   .calendar_years
     .calendar_months
       .calendar_days
-        .calendar_day
+        .calendar_day_btn
           display inline-block
           font-size 1em
+          padding 0
           border-radius 2px
           margin 3px
-          padding 16px
-          min-width 50px
-          min-height  60px
+          min-width 60px
+          min-height 70px
           text-align center
-          cursor pointer
+          .calendar_day
+            padding 21px
+          .extended_calendar_day
+            .day_num_container
+              width 40%
+              overflow hidden
+              .day_num
+                font-weight bold
+                padding 22px 0
+            .day_info
+              width 60%
+              height 69px
+              float right
+              overflow hidden
+              border-left 1px solid #FFF
+              .total_days_dues
+                height 50%
+              .total_days_amount
+                font-size 0.8em
+                height 50%
+                border-top 1px solid #FFF

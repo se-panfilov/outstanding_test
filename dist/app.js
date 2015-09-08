@@ -45,10 +45,10 @@ angular.module('outstanding.data', [])
                 //TODO (S.Panfilov) just a mock
                 return [
                     ['Contract', 'Date', 'Time', 'Amount'],
-                    [14851, '20/05/2016', '12:04:78.594', 1405.61],
-                    [35156, '20/05/2016', '12:37:35.298', 23415.51],
-                    [29526, '22/05/2016', '15:24:31.562', 5296.15],
-                    [29586, '23/05/2016', '11:27:25.158', 18150.57],
+                    //[14851, '20/05/2016', '12:04:78.594', 1405.61],
+                    //[35156, '20/05/2016', '12:37:35.298', 23415.51],
+                    //[29526, '22/05/2016', '15:24:31.562', 5296.15],
+                    //[29586, '23/05/2016', '11:27:25.158', 18150.57],
                     [56556, '04/06/2016', '09:51:21.565', 9385.19]
                 ]
             },
@@ -149,13 +149,17 @@ angular.module('outstanding.calendar', [])
             return result;
         }
 
-        function _getMonthNumber(datetime) {
+        function _getMonthNumber(datetime, isUserView) {
             var date = new Date(datetime);
+            var result;
             if (!exports.isUTC) {
-                return date.getMonth();
+                result = date.getMonth();
             } else {
-                return date.getUTCMonth();
+                result = date.getUTCMonth();
             }
+
+            result += (isUserView) ? 1 : 0;
+            return result;
         }
 
         function _getDayNumber(datetime) {
@@ -165,15 +169,6 @@ angular.module('outstanding.calendar', [])
             } else {
                 return date.getUTCDate();
             }
-        }
-
-        function getMonth(datetime) {
-            var month = {
-                number: _getMonthNumber(datetime),
-                days: _getDays(datetime)
-            };
-
-            return month;
         }
 
         function _getYearNumber(datetime) {
@@ -191,7 +186,7 @@ angular.module('outstanding.calendar', [])
             for (var i = 0; i < dateTimesList.length; i++) {
                 var datetime = dateTimesList[i];
                 if (yearNum === _getYearNumber(datetime)) {
-                    var monthNum = _getMonthNumber(datetime);
+                    var monthNum = _getMonthNumber(datetime, true);
                     if (!result[monthNum]) {
                         result[monthNum] = _getDays(monthNum, yearNum);
                     }
@@ -239,7 +234,7 @@ angular.module('outstanding.calendar', [])
                 for (var i = 0; i < exports.dates.length; i++) {
                     var datetime = exports.dates[i];
                     var yearNum = _getYearNumber(datetime);//TODO (S.Panfilov) bug with -1/+1 month number
-                    var monthNum = ('0' + (_getMonthNumber(datetime) + 1)).slice(-2);
+                    var monthNum = ('0' + _getMonthNumber(datetime, true)).slice(-2);
                     var dayNum = ('0' + _getDayNumber(datetime)).slice(-2);
                     var dateStr = dayNum + '/' + monthNum + '/' + yearNum;//A hack cause normally should be based on regexp
 
