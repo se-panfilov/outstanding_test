@@ -296,6 +296,10 @@ angular.module('outstanding.calendar', [])
                     return result;
                 };
 
+                scope.setSelectedDate = function (day, month, year) {
+                    scope.selected = CalendarFactory.years[year][month][day];
+                };
+
                 scope.$watch('source', function (value, oldValue) {
                         if (!value || value === oldValue) return;
                         initFactory(value);
@@ -328,6 +332,7 @@ angular.module('outstanding.date_details', [])
         return {
             restrict: 'E',
             replace: true,
+            templateUrl: 'date_details/date_details.html',
             link: function (scope, elem) {
                 console.log('details');
             }

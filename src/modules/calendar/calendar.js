@@ -179,6 +179,10 @@ angular.module('outstanding.calendar', [])
                     return result;
                 };
 
+                scope.setSelectedDate = function (day, month, year) {
+                    scope.selected = CalendarFactory.years[year][month][day];
+                };
+
                 scope.$watch('source', function (value, oldValue) {
                         if (!value || value === oldValue) return;
                         initFactory(value);
