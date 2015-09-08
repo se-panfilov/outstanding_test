@@ -2,7 +2,14 @@
 
 angular.module('outstanding.calendar', [])
 
-    .factory('CalendarFactory', function (DataFactory) {
+    .constant('DAY_EVENT_FIELDS', {
+        CONTRACT: 'contract',
+        AMOUNT: 'amount',
+        DATE: 'date',
+        TIME: 'time'
+    })
+
+    .factory('CalendarFactory', function (DataFactory, DAY_EVENT_FIELDS) {
 
         function _getDaysInMonth(month, year) {
             var date = new Date(year, month + 1, 0);
@@ -120,15 +127,13 @@ angular.module('outstanding.calendar', [])
                     var dateStr = dayNum + '/' + monthNum + '/' + yearNum;//A hack cause normally should be based on regexp
 
                     var row = DataFactory.getRowByDateString(dateStr);
+                    var event = {};
 
                     exports.years[+yearNum][+monthNum][+dayNum].events = exports.years[+yearNum][+monthNum][+dayNum].events || [];
-                    exports.years[+yearNum][+monthNum][+dayNum].events.push(
-                        {
-                            contract: DataFactory.getContractVal(row),
-                            time: DataFactory.getTimeVal(row),
-                            amount: DataFactory.getAmountVal(row)
-                        }
-                    );
+                    event[DAY_EVENT_FIELDS.CONTRACT] = DataFactory.getContractVal(row);
+                    event[DAY_EVENT_FIELDS.TIME] = DataFactory.getTimeVal(row);
+                    event[DAY_EVENT_FIELDS.AMOUNT] = DataFactory.getAmountVal(row);
+                    exports.years[+yearNum][+monthNum][+dayNum].events.push(event);
                 }
             }
         };
@@ -136,7 +141,7 @@ angular.module('outstanding.calendar', [])
         return exports;
     })
 
-    .directive('calendar', function (CalendarFactory) {
+    .directive('calendar', function (CalendarFactory, DAY_EVENT_FIELDS) {
         return {
             restrict: 'E',
             replace: true,
@@ -167,20 +172,33 @@ angular.module('outstanding.calendar', [])
                     return monthNamesList[num - 1];
                 };
 
+                scope.getTotalForDay = function (eventsList, fieldName) {
+                    var result = 0;
+                    for (var i = 0; i < eventsList.length; i++) {
+                        var event = eventsList[i];
+                        result += event[fieldName];
+                    }
+
+                    return result;
+                };
+
                 scope.$watch('source', function (value, oldValue) {
                         if (!value || value === oldValue) return;
-                        _init(value);
+                        initFactory(value);
                     }
                 );
 
-                function _init(sourceData) {
+                function initFactory(sourceData) {
                     CalendarFactory.setUTC(scope.isUtc);
                     CalendarFactory.setDates(sourceData);
                     CalendarFactory.makeYearsList();
                     CalendarFactory.insertDataToDates();
                 }
 
-                scope.CalendarFactory = CalendarFactory;
+                (function _init() {
+                    scope.CalendarFactory = CalendarFactory;
+                    scope.DAY_EVENT_FIELDS = DAY_EVENT_FIELDS;
+                })();
 
             }
         };

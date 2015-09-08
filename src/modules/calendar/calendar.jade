@@ -4,4 +4,11 @@ section.calendar(aria-label="Calendar")
         .calendar_months(ng-repeat="(month, daysList) in monthList track by $index")
             h4(ng-bind="getMonthName(month)", aria-label="Month")
             span.calendar_days
-                button.btn.btn-default.calendar_day(type="button", ng-repeat="(day, day_info) in daysList track by $index", ng-bind="day")
+                button.btn.btn-default.calendar_day(type="button", ng-repeat="(day, day_info) in daysList track by $index")
+                    span(ng-bind="day", ng-hide!="day_info.events.length > 1")
+                    div(ng-show!="day_info.events.length > 1")
+                        div
+                            span(ng-bind="day")
+                        .day_info
+                            .total_days_dues(ng-bind="getTotalForDay(day_info.events, DAY_EVENT_FIELDS.CONTRACT)")
+                            .total_days_amount(ng-bind="getTotalForDay(day_info.events, DAY_EVENT_FIELDS.AMOUNT)")
