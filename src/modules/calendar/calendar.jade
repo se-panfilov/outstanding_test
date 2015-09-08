@@ -4,7 +4,7 @@ section.calendar(aria-label="Calendar")
         .calendar_months(ng-repeat="(month, daysList) in monthList track by $index")
             h4(ng-bind="getMonthName(month)", aria-label="Month")
             span.calendar_days
-                button.btn.btn-default.calendar_day(type="button", ng-repeat="(day, day_info) in daysList track by $index")
+                button.btn.calendar_day(type="button", ng-repeat="(day, day_info) in daysList track by $index", ng-class="{'btn-info': !!day_info.events.length, 'btn-default': !day_info.events}")
                     span(ng-bind="day", ng-hide!="day_info.events.length > 1")
                     div(ng-show!="day_info.events.length > 1")
                         div

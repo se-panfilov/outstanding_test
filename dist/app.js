@@ -290,6 +290,8 @@ angular.module('outstanding.calendar', [])
                 };
 
                 scope.getTotalForDay = function (eventsList, fieldName) {
+                    if (!eventsList) return;
+
                     var result = 0;
                     for (var i = 0; i < eventsList.length; i++) {
                         var event = eventsList[i];
