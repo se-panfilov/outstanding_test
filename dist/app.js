@@ -247,6 +247,17 @@ angular.module('outstanding.calendar', [])
                     event[DAY_EVENT_FIELDS.AMOUNT] = DataFactory.getAmountVal(row);
                     exports.years[+yearNum][+monthNum][+dayNum].events.push(event);
                 }
+            },
+            getTotalForDay: function (eventsList, fieldName) {
+                if (!eventsList) return;
+
+                var result = 0;
+                for (var i = 0; i < eventsList.length; i++) {
+                    var event = eventsList[i];
+                    result += event[fieldName];
+                }
+
+                return result;
             }
         };
 
@@ -284,20 +295,13 @@ angular.module('outstanding.calendar', [])
                     return monthNamesList[num - 1];
                 };
 
-                scope.getTotalForDay = function (eventsList, fieldName) {
-                    if (!eventsList) return;
-
-                    var result = 0;
-                    for (var i = 0; i < eventsList.length; i++) {
-                        var event = eventsList[i];
-                        result += event[fieldName];
-                    }
-
-                    return result;
-                };
-
                 scope.setSelectedDate = function (day, month, year) {
-                    scope.selected = CalendarFactory.years[year][month][day];
+                    scope.selected = {
+                        day: day,
+                        month: month,
+                        year: year,
+                        data: CalendarFactory.years[year][month][day]
+                    };
                 };
 
                 scope.$watch('source', function (value, oldValue) {
@@ -326,18 +330,25 @@ angular.module('outstanding.calendar', [])
 
 'use strict';
 
-angular.module('outstanding.date_details', [])
+angular.module('outstanding.date_details', [
+    'outstanding.calendar'
+])
 
-    .directive('date_details', function () {
+    .directive('dateDetails', ['CalendarFactory', 'DAY_EVENT_FIELDS', function (CalendarFactory, DAY_EVENT_FIELDS) {
         return {
             restrict: 'E',
             replace: true,
+            scope: {
+                source: '='
+            },
             templateUrl: 'date_details/date_details.html',
-            link: function (scope, elem) {
-                console.log('details');
+            link: function (scope) {
+
+                scope.CalendarFactory = CalendarFactory;
+                scope.DAY_EVENT_FIELDS = DAY_EVENT_FIELDS;
             }
         };
-    })
+    }])
 
 ;
 

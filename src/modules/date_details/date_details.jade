@@ -1,14 +1,24 @@
 section.date_details(aria-label="Selected date details")
-    .selected_date
+    h3.selected_date(ng-bind="source.day + '/' + source.month + '/' + source.year ")
     .dues_count
+        span Dues count
+        | &nbsp;
+        span(ng-bind="source.data.events.length")
     .total_amount
+        | asdsad
+        span(ng-bind="CalendarFactory.getTotalForDay(source.events, DAY_EVENT_FIELDS.AMOUNT)")
     table.table
         tr
+            th #
             th Contract
             th Amount
             th Time
-        tr(ng-repeat="c in contracts")
+        tr(ng-repeat="e in source.data.events track by $index")
             td
-                span(ng-bind="c.number")
-                span(ng-bind="c.amount")
-                span(ng-bind="c.time")
+                span(ng-bind="$index + 1")
+            td
+                span(ng-bind="e.contract")
+            td
+                span(ng-bind="e.amount")
+            td
+                span(ng-bind="e.time")

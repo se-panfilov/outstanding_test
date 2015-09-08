@@ -1,14 +1,21 @@
 'use strict';
 
-angular.module('outstanding.date_details', [])
+angular.module('outstanding.date_details', [
+    'outstanding.calendar'
+])
 
-    .directive('date_details', function () {
+    .directive('dateDetails', function (CalendarFactory, DAY_EVENT_FIELDS) {
         return {
             restrict: 'E',
             replace: true,
+            scope: {
+                source: '='
+            },
             templateUrl: 'date_details/date_details.html',
-            link: function (scope, elem) {
-                console.log('details');
+            link: function (scope) {
+
+                scope.CalendarFactory = CalendarFactory;
+                scope.DAY_EVENT_FIELDS = DAY_EVENT_FIELDS;
             }
         };
     })

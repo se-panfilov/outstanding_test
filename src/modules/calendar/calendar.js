@@ -130,6 +130,17 @@ angular.module('outstanding.calendar', [])
                     event[DAY_EVENT_FIELDS.AMOUNT] = DataFactory.getAmountVal(row);
                     exports.years[+yearNum][+monthNum][+dayNum].events.push(event);
                 }
+            },
+            getTotalForDay: function (eventsList, fieldName) {
+                if (!eventsList) return;
+
+                var result = 0;
+                for (var i = 0; i < eventsList.length; i++) {
+                    var event = eventsList[i];
+                    result += event[fieldName];
+                }
+
+                return result;
             }
         };
 
@@ -167,20 +178,13 @@ angular.module('outstanding.calendar', [])
                     return monthNamesList[num - 1];
                 };
 
-                scope.getTotalForDay = function (eventsList, fieldName) {
-                    if (!eventsList) return;
-
-                    var result = 0;
-                    for (var i = 0; i < eventsList.length; i++) {
-                        var event = eventsList[i];
-                        result += event[fieldName];
-                    }
-
-                    return result;
-                };
-
                 scope.setSelectedDate = function (day, month, year) {
-                    scope.selected = CalendarFactory.years[year][month][day];
+                    scope.selected = {
+                        day: day,
+                        month: month,
+                        year: year,
+                        data: CalendarFactory.years[year][month][day]
+                    };
                 };
 
                 scope.$watch('source', function (value, oldValue) {
