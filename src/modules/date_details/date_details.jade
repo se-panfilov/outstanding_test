@@ -1,5 +1,5 @@
 section.date_details(aria-label="Selected date details")
-    h3.selected_date(ng-bind="source.day + '/' + source.month + '/' + source.year ")
+    h3.selected_date(ng-bind="source.day + ' ' + CalendarFactory.getMonthName(source.month) + ' ' + source.year ")
     .dues_count
         span Dues count
         | &nbsp;

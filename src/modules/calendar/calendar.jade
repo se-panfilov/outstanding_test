@@ -2,7 +2,7 @@ section.calendar(aria-label="Calendar")
     .calendar_years(ng-repeat="(year, monthList) in CalendarFactory.years track by $index")
         h3(ng-bind="year", aria-label="Year")
         .calendar_months(ng-repeat="(month, daysList) in monthList track by $index")
-            h4(ng-bind="getMonthName(month)", aria-label="Month")
+            h4(ng-bind="CalendarFactory.getMonthName(month)", aria-label="Month")
             span.calendar_days
                 button.btn.calendar_day_btn(
                 type="button",

@@ -117,6 +117,36 @@ angular.module('outstanding.data', [])
 
 'use strict';
 
+angular.module('outstanding.pages.landing', [
+    'outstanding.calendar',
+    'outstanding.date_details',
+    'outstanding.uploader',
+    'ui.router'
+])
+
+    .config(['$stateProvider', function ($stateProvider) {
+
+        $stateProvider
+            .state('landing', {
+                url: '/landing',
+                templateUrl: 'landing/landing.html',
+                controller: 'LandingPageCtrl'
+            })
+        ;
+    }])
+
+    .controller('LandingPageCtrl', ['$scope', 'DataFactory', function ($scope, DataFactory) {
+
+        (function _init() {
+            $scope.DataFactory = DataFactory;
+            $scope.isUtc = false;
+        })();
+
+    }])
+;
+
+'use strict';
+
 angular.module('outstanding.calendar', [])
 
     .constant('DAY_EVENT_FIELDS', {
@@ -126,7 +156,22 @@ angular.module('outstanding.calendar', [])
         TIME: 'time'
     })
 
-    .factory('CalendarFactory', ['DataFactory', 'DAY_EVENT_FIELDS', function (DataFactory, DAY_EVENT_FIELDS) {
+    .constant('MONTH_NAMES', [
+        'January',
+        'February',
+        'March',
+        'April',
+        'May',
+        'June',
+        'July',
+        'August',
+        'September',
+        'October',
+        'November',
+        'December'
+    ])
+
+    .factory('CalendarFactory', ['DataFactory', 'DAY_EVENT_FIELDS', 'MONTH_NAMES', function (DataFactory, DAY_EVENT_FIELDS, MONTH_NAMES) {
 
         function _getDaysInMonth(month, year) {
             var date = new Date(year, month + 1, 0);
@@ -258,6 +303,9 @@ angular.module('outstanding.calendar', [])
                 }
 
                 return result;
+            },
+            getMonthName: function (num) {
+                return MONTH_NAMES[num - 1];
             }
         };
 
@@ -275,25 +323,6 @@ angular.module('outstanding.calendar', [])
                 isUtc: '='
             },
             link: function (scope) {
-
-                var monthNamesList = [
-                    'January',
-                    'February',
-                    'March',
-                    'April',
-                    'May',
-                    'June',
-                    'July',
-                    'August',
-                    'September',
-                    'October',
-                    'November',
-                    'December'
-                ];
-
-                scope.getMonthName = function (num) {
-                    return monthNamesList[num - 1];
-                };
 
                 scope.setSelectedDate = function (day, month, year) {
                     scope.selected = {
@@ -400,34 +429,4 @@ angular.module('outstanding.uploader', [])
     })
 
 
-;
-
-'use strict';
-
-angular.module('outstanding.pages.landing', [
-    'outstanding.calendar',
-    'outstanding.date_details',
-    'outstanding.uploader',
-    'ui.router'
-])
-
-    .config(['$stateProvider', function ($stateProvider) {
-
-        $stateProvider
-            .state('landing', {
-                url: '/landing',
-                templateUrl: 'landing/landing.html',
-                controller: 'LandingPageCtrl'
-            })
-        ;
-    }])
-
-    .controller('LandingPageCtrl', ['$scope', 'DataFactory', function ($scope, DataFactory) {
-
-        (function _init() {
-            $scope.DataFactory = DataFactory;
-            $scope.isUtc = false;
-        })();
-
-    }])
 ;
