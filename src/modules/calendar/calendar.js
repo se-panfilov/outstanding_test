@@ -128,7 +128,7 @@ angular.module('outstanding.calendar', [])
                 exports.dates = [];
                 parseDateStr(data, function (date) {
                     exports.dates.push(date);
-                })
+                });
             },
             makeYearsList: function () {
                 var years = {};

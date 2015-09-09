@@ -24,7 +24,7 @@ angular.module('outstanding.data', [])
                     [29526, '22/05/2016', '15:24:31.562', 5296.15],
                     [29586, '23/05/2016', '11:27:25.158', 18150.57],
                     [56556, '04/06/2016', '09:51:21.565', 9385.19]
-                ]
+                ];
             },
             getCol: function (parsedData, colNum, isExcludeTitle) {
                 var result = [];
@@ -37,7 +37,7 @@ angular.module('outstanding.data', [])
                 return result;
             },
             getRow: function (parsedData, rowNum) {
-                return parsedData[rowNum];//TODO (S.Panfilov) unused
+                return parsedData[rowNum];
             },
             getContractCol: function (parsedData, isExcludeTitle) {
                 return exports.getCol(parsedData, COLS.CONTRACT, isExcludeTitle);
