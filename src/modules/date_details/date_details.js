@@ -20,4 +20,11 @@ angular.module('outstanding.date_details', [
         };
     })
 
+    .filter('pureTime', function () {
+        return function (timeStr) {
+            var start = 0;
+            var separator = '.';
+            return timeStr.substr(start, timeStr.lastIndexOf(separator));
+        }
+    })
 ;

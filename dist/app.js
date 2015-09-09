@@ -117,6 +117,36 @@ angular.module('outstanding.data', [])
 
 'use strict';
 
+angular.module('outstanding.pages.landing', [
+    'outstanding.calendar',
+    'outstanding.date_details',
+    'outstanding.uploader',
+    'ui.router'
+])
+
+    .config(['$stateProvider', function ($stateProvider) {
+
+        $stateProvider
+            .state('landing', {
+                url: '/landing',
+                templateUrl: 'landing/landing.html',
+                controller: 'LandingPageCtrl'
+            })
+        ;
+    }])
+
+    .controller('LandingPageCtrl', ['$scope', 'DataFactory', function ($scope, DataFactory) {
+
+        (function _init() {
+            $scope.DataFactory = DataFactory;
+            $scope.isUtc = false;
+        })();
+
+    }])
+;
+
+'use strict';
+
 angular.module('outstanding.calendar', [])
 
     .constant('DAY_EVENT_FIELDS', {
@@ -359,6 +389,13 @@ angular.module('outstanding.date_details', [
         };
     }])
 
+    .filter('pureTime', function () {
+        return function (timeStr) {
+            var start = 0;
+            var separator = '.';
+            return timeStr.substr(start, timeStr.lastIndexOf(separator));
+        }
+    })
 ;
 
 'use strict';
@@ -409,34 +446,4 @@ angular.module('outstanding.uploader', [])
     })
 
 
-;
-
-'use strict';
-
-angular.module('outstanding.pages.landing', [
-    'outstanding.calendar',
-    'outstanding.date_details',
-    'outstanding.uploader',
-    'ui.router'
-])
-
-    .config(['$stateProvider', function ($stateProvider) {
-
-        $stateProvider
-            .state('landing', {
-                url: '/landing',
-                templateUrl: 'landing/landing.html',
-                controller: 'LandingPageCtrl'
-            })
-        ;
-    }])
-
-    .controller('LandingPageCtrl', ['$scope', 'DataFactory', function ($scope, DataFactory) {
-
-        (function _init() {
-            $scope.DataFactory = DataFactory;
-            $scope.isUtc = false;
-        })();
-
-    }])
 ;

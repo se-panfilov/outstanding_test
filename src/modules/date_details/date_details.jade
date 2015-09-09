@@ -23,6 +23,6 @@ section.date_details(aria-label="Selected date details")
                 td
                     span(ng-bind="e.amount")
                 td
-                    span(ng-bind="e.time")
+                    span(ng-bind="e.time | pureTime")
     .no_duties_body(ng-show="source.data && !source.data.events")
         h5 No dues today
