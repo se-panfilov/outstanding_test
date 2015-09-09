@@ -176,7 +176,9 @@ gulp.task('vendor_js', function () {
         'bower_components/angular-animate/angular-animate.js',
         'bower_components/angular-loading-bar/build/loading-bar.js',
         'bower_components/angular-ui-router/release/angular-ui-router.js',
-        'bower_components/angular-ui-router-anim-in-out/anim-in-out.js'
+        'bower_components/angular-ui-router-anim-in-out/anim-in-out.js',
+        'bower_components/papaparse/papaparse.min.js',
+        'bower_components/AngularJS-Toaster/toaster.min.js'
     ])
         .pipe(concat('vendor.js'))
         .pipe(gulp.dest(dest.dist))

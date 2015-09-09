@@ -3,6 +3,7 @@
 angular.module('outstanding', [
     //modules
     'outstanding.templates',
+    'outstanding.messages',
 
     //pages
     'outstanding.pages.landing',

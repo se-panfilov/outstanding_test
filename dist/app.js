@@ -3,6 +3,7 @@
 angular.module('outstanding', [
     //modules
     'outstanding.templates',
+    'outstanding.messages',
 
     //pages
     'outstanding.pages.landing',
@@ -28,7 +29,7 @@ angular.module('outstanding', [
 
 angular.module('outstanding.data', [])
 
-    .factory('DataFactory', ['$rootScope', function ($rootScope) {
+    .factory('DataFactory', ['$rootScope', 'MessagesFactory', function ($rootScope, MessagesFactory) {
 
         var COLS = {
             CONTRACT: 0,
@@ -43,14 +44,12 @@ angular.module('outstanding.data', [])
             selectedDate: null,
             parseData: function (data) {
                 //TODO (S.Panfilov) just a mock
-                return [
-                    ['Contract', 'Date', 'Time', 'Amount'],
-                    [14851, '20/05/2016', '12:04:78.594', 1405.61],
-                    [35156, '20/05/2016', '12:37:35.298', 23415.51],
-                    [29526, '22/05/2016', '15:24:31.562', 5296.15],
-                    [29586, '23/05/2016', '11:27:25.158', 18150.57],
-                    [56556, '04/06/2016', '09:51:21.565', 9385.19]
-                ];
+                var parsed = Papa.parse(data, {skipEmptyLines: true, dynamicTyping: true});
+                if (parsed.errors){
+                    MessagesFactory.errorMsg('Cannot parse .csv');
+                }
+
+                return parsed.data;
             },
             getCol: function (parsedData, colNum, isExcludeTitle) {
                 var result = [];
@@ -117,34 +116,41 @@ angular.module('outstanding.data', [])
 
 'use strict';
 
-angular.module('outstanding.pages.landing', [
-    'outstanding.calendar',
-    'outstanding.date_details',
-    'outstanding.uploader',
-    'ui.router'
-])
+angular.module('outstanding.messages', ['toaster'])
 
-    .config(['$stateProvider', function ($stateProvider) {
+    .factory('MessagesFactory', ['toaster', function (toaster) {
 
-        $stateProvider
-            .state('landing', {
-                url: '/landing',
-                templateUrl: 'landing/landing.html',
-                controller: 'LandingPageCtrl'
-            })
-        ;
-    }])
+        var _messageTypes = {
+            success: 'success',
+            error: 'error',
+            info: 'info',
+            warning: 'warning',
+            wait: 'wait'
+        };
 
-    .controller('LandingPageCtrl', ['$scope', 'DataFactory', function ($scope, DataFactory) {
+        var _messagesTitles = {
+            error: 'Error'
+        };
 
-        (function _init() {
-            $scope.DataFactory = DataFactory;
-            $scope.isUtc = false;
-        })();
+        var exports = {
+            successMsg: function (message, title) {
+                title = title || null;
 
+                toaster.pop(_messageTypes.success, title, message);
+            },
+            errorMsg: function (message, title) {
+                title = title || _messagesTitles.error;
+
+                toaster.pop(_messageTypes.error, title, message);
+            },
+            infoMsg: function (message, title) {
+                toaster.pop(_messageTypes.info, title, message);
+            }
+       };
+
+        return exports;
     }])
 ;
-
 'use strict';
 
 angular.module('outstanding.calendar', [])
@@ -469,4 +475,34 @@ angular.module('outstanding.uploader', [])
     })
 
 
+;
+
+'use strict';
+
+angular.module('outstanding.pages.landing', [
+    'outstanding.calendar',
+    'outstanding.date_details',
+    'outstanding.uploader',
+    'ui.router'
+])
+
+    .config(['$stateProvider', function ($stateProvider) {
+
+        $stateProvider
+            .state('landing', {
+                url: '/landing',
+                templateUrl: 'landing/landing.html',
+                controller: 'LandingPageCtrl'
+            })
+        ;
+    }])
+
+    .controller('LandingPageCtrl', ['$scope', 'DataFactory', function ($scope, DataFactory) {
+
+        (function _init() {
+            $scope.DataFactory = DataFactory;
+            $scope.isUtc = false;
+        })();
+
+    }])
 ;

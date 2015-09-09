@@ -6,7 +6,7 @@ section.date_details(aria-label="Selected date details")
             | &nbsp;
             span(ng-bind="source.data.events.length")
         h5.total_amount
-            | Total Amount
+            | Total Amount:
             | &nbsp;
             span(ng-bind="CalendarFactory.getTotalForDay(source.data.events, DAY_EVENT_FIELDS.AMOUNT)")
         table.table.margin_top_big(ng-hide="!source.data.events")
