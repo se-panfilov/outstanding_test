@@ -213,6 +213,17 @@ angular.module('outstanding.calendar', [])
 
         var DATE_REGEXP = new RegExp(/\d+/g);
 
+        function parseDateStr(data, cb) {
+            var datesCol = DataFactory.getDateCol(data, true);
+
+            for (var i = 0; i < datesCol.length; i++) {
+                var dateString = datesCol[i];
+                var parsed = dateString.match(DATE_REGEXP);
+                var date = new Date(parsed[2], parsed[1] - 1, parsed[0]);
+                if (cb) cb(date.getTime(), parsed);
+            }
+        }
+
         var exports = {
             dates: [],
             years: [],
@@ -222,14 +233,9 @@ angular.module('outstanding.calendar', [])
             },
             setDates: function (data) {
                 exports.dates = [];
-                var datesCol = DataFactory.getDateCol(data, true);
-
-                for (var i = 0; i < datesCol.length; i++) {
-                    var dateString = datesCol[i];
-                    var parsed = dateString.match(DATE_REGEXP);
-                    var date = new Date(parsed[2], parsed[1] - 1, parsed[0]);
-                    exports.dates.push(date.getTime());
-                }
+                parseDateStr(data, function (date) {
+                    exports.dates.push(date);
+                })
             },
             makeYearsList: function () {
                 var years = {};
@@ -245,17 +251,20 @@ angular.module('outstanding.calendar', [])
                 exports.years = years;
 
             },
-            insertDataToDates: function () {
-                for (var i = 0; i < exports.dates.length; i++) {
-                    var datetime = exports.dates[i];
-                    var yearNum = _getYearNumber(datetime);//TODO (S.Panfilov) bug with -1/+1 month number
+            insertDataToDates: function (data) {
+                var start = 1; //beacuse 0 - is a title row
+                for (var i = start; i < data.length; i++) {
+                    var row = data[i];
+                    var event = {};
+
+                    var dateString = DataFactory.getDateVal(row);
+                    var parsed = dateString.match(DATE_REGEXP);
+                    var date = new Date(parsed[2], parsed[1] - 1, parsed[0]);
+                    var datetime = date.getTime();
+
+                    var yearNum = '' + _getYearNumber(datetime);
                     var monthNum = ('0' + _getMonthNumber(datetime, true)).slice(-2);
                     var dayNum = ('0' + _getDayNumber(datetime)).slice(-2);
-                    var dateStr = dayNum + '/' + monthNum + '/' + yearNum;//A hack cause normally should be based on regexp
-
-                    //TODO (S.Panfilov) BUG: we cannot act like so (take strings by date), because of same date events
-                    var row = DataFactory.getRowByDateString(dateStr);
-                    var event = {};
 
                     exports.years[+yearNum][+monthNum][+dayNum].events = exports.years[+yearNum][+monthNum][+dayNum].events || [];
                     event[DAY_EVENT_FIELDS.CONTRACT] = DataFactory.getContractVal(row);
@@ -314,7 +323,7 @@ angular.module('outstanding.calendar', [])
                     CalendarFactory.setUTC(scope.isUtc);
                     CalendarFactory.setDates(sourceData);
                     CalendarFactory.makeYearsList();
-                    CalendarFactory.insertDataToDates();
+                    CalendarFactory.insertDataToDates(sourceData);
                 }
 
                 (function _init() {
