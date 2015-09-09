@@ -117,36 +117,6 @@ angular.module('outstanding.data', [])
 
 'use strict';
 
-angular.module('outstanding.pages.landing', [
-    'outstanding.calendar',
-    'outstanding.date_details',
-    'outstanding.uploader',
-    'ui.router'
-])
-
-    .config(['$stateProvider', function ($stateProvider) {
-
-        $stateProvider
-            .state('landing', {
-                url: '/landing',
-                templateUrl: 'landing/landing.html',
-                controller: 'LandingPageCtrl'
-            })
-        ;
-    }])
-
-    .controller('LandingPageCtrl', ['$scope', 'DataFactory', function ($scope, DataFactory) {
-
-        (function _init() {
-            $scope.DataFactory = DataFactory;
-            $scope.isUtc = false;
-        })();
-
-    }])
-;
-
-'use strict';
-
 angular.module('outstanding.calendar', [])
 
     .constant('DAY_EVENT_FIELDS', {
@@ -316,6 +286,14 @@ angular.module('outstanding.calendar', [])
             },
             getMonthName: function (num) {
                 return MONTH_NAMES[num - 1];
+            },
+            getDayOfWeek: function (monthNum, yearNum) {
+                var date = new Date(+yearNum, +monthNum -1, 1);
+                if (!exports.isUTC) {
+                    return date.getDay();
+                } else {
+                    return date.getUTCDay();
+                }
             }
         };
 
@@ -446,4 +424,34 @@ angular.module('outstanding.uploader', [])
     })
 
 
+;
+
+'use strict';
+
+angular.module('outstanding.pages.landing', [
+    'outstanding.calendar',
+    'outstanding.date_details',
+    'outstanding.uploader',
+    'ui.router'
+])
+
+    .config(['$stateProvider', function ($stateProvider) {
+
+        $stateProvider
+            .state('landing', {
+                url: '/landing',
+                templateUrl: 'landing/landing.html',
+                controller: 'LandingPageCtrl'
+            })
+        ;
+    }])
+
+    .controller('LandingPageCtrl', ['$scope', 'DataFactory', function ($scope, DataFactory) {
+
+        (function _init() {
+            $scope.DataFactory = DataFactory;
+            $scope.isUtc = false;
+        })();
+
+    }])
 ;

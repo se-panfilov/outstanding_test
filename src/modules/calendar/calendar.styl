@@ -1,16 +1,46 @@
 in_btn_border = 1px solid #FFF
+button_width = 60px
+between_btn_space = 3px
 
 .calendar
   .calendar_years
     .calendar_months
       .calendar_days
+        &.c_day_of_week_0
+          .calendar_day_btn
+            &:first-of-type
+              margin-left between_btn_space
+        &.c_day_of_week_1
+          .calendar_day_btn
+            &:first-of-type
+              margin-left button_width + (between_btn_space * 3)
+        &.c_day_of_week_2
+          .calendar_day_btn
+            &:first-of-type
+              margin-left (button_width * 2) + (between_btn_space * 5)
+        &.c_day_of_week_3
+          .calendar_day_btn
+            &:first-of-type
+              margin-left (button_width * 3) + (between_btn_space * 7)
+        &.c_day_of_week_4
+          .calendar_day_btn
+            &:first-of-type
+              margin-left (button_width * 4) + (between_btn_space * 9)
+        &.c_day_of_week_5
+          .calendar_day_btn
+            &:first-of-type
+              margin-left (button_width * 5) + (between_btn_space * 11)
+        &.c_day_of_week_6
+          .calendar_day_btn
+            &:first-of-type
+              margin-left (button_width * 6) + (between_btn_space * 13)
         .calendar_day_btn
           display inline-block
           font-size 1em
           padding 0
           border-radius 2px
-          margin 3px
-          min-width 60px
+          margin between_btn_space
+          min-width button_width
           min-height 70px
           text-align center
           .calendar_day

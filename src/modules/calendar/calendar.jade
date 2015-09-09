@@ -3,7 +3,7 @@ section.calendar(aria-label="Calendar")
         h3(ng-bind="year", aria-label="Year")
         .calendar_months(ng-repeat="(month, daysList) in monthList track by $index")
             h4(ng-bind="CalendarFactory.getMonthName(month)", aria-label="Month")
-            span.calendar_days
+            span.calendar_days(class="c_day_of_week_{{CalendarFactory.getDayOfWeek(month, year)}}")
                 button.btn.calendar_day_btn(
                 type="button",
                 ng-click="setSelectedDate(day, month, year)",

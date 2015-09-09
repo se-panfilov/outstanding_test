@@ -169,6 +169,14 @@ angular.module('outstanding.calendar', [])
             },
             getMonthName: function (num) {
                 return MONTH_NAMES[num - 1];
+            },
+            getDayOfWeek: function (monthNum, yearNum) {
+                var date = new Date(+yearNum, +monthNum -1, 1);
+                if (!exports.isUTC) {
+                    return date.getDay();
+                } else {
+                    return date.getUTCDay();
+                }
             }
         };
 
