@@ -1,7 +1,7 @@
 .landing_page
     .container
         .upload_view(ng-show="DataFactory.data && DataFactory.data.length == 0")
-            uploader.margin_top_big(storage="DataFactory.data")
+            uploader(storage="DataFactory.data")
         .data_view(ng-show="DataFactory.data && DataFactory.data.length > 0")
             calendar(source="DataFactory.parsedData", selected="DataFactory.selectedDate", is-utc="isUtc")
             date-details(source="DataFactory.selectedDate")
