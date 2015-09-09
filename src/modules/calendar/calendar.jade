@@ -3,6 +3,8 @@ section.calendar(aria-label="Calendar")
         h3(ng-bind="year", aria-label="Year")
         .calendar_months(ng-repeat="(month, daysList) in monthList track by $index")
             h4(ng-bind="CalendarFactory.getMonthName(month)", aria-label="Month")
+            .days_of_week
+                span.day_of_week(ng-repeat="d in DAYS_OF_WEEK", ng-bind="d")
             span.calendar_days(class="c_day_of_week_{{CalendarFactory.getDayOfWeek(month, year)}}")
                 button.btn.calendar_day_btn(
                 type="button",
@@ -16,4 +18,6 @@ section.calendar(aria-label="Calendar")
                         .total_days_dues(ng-bind="day_info.events.length")
                         .day_num_container
                             span.day_num(ng-bind="day")
-                        .total_days_amount(ng-bind="CalendarFactory.getTotalForDay(day_info.events, DAY_EVENT_FIELDS.AMOUNT)")
+                        .total_days_amount(
+                        ng-bind="CalendarFactory.getTotalForDay(day_info.events, DAY_EVENT_FIELDS.AMOUNT)"
+                        )

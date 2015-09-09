@@ -5,6 +5,18 @@ between_btn_space = 3px
 .calendar
   .calendar_years
     .calendar_months
+      width (button_width * 7) + (between_btn_space * 15)
+      .days_of_week
+        .day_of_week
+          display inline-block
+          font-size 1em
+          padding 0
+          border-radius 2px
+          margin between_btn_space
+          min-width button_width
+          text-align center
+          &:nth-child(6), &:nth-child(7)
+            background-color #EEE
       .calendar_days
         &.c_day_of_week_0
           .calendar_day_btn

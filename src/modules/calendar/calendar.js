@@ -9,6 +9,16 @@ angular.module('outstanding.calendar', [])
         TIME: 'time'
     })
 
+    .constant('DAYS_OF_WEEK', [
+        'Mon',
+        'Tue',
+        'Wed',
+        'Thu',
+        'Fri',
+        'Sat',
+        'Sun'
+    ])
+
     .constant('MONTH_NAMES', [
         'January',
         'February',
@@ -171,19 +181,23 @@ angular.module('outstanding.calendar', [])
                 return MONTH_NAMES[num - 1];
             },
             getDayOfWeek: function (monthNum, yearNum) {
+                var result;
                 var date = new Date(+yearNum, +monthNum -1, 1);
                 if (!exports.isUTC) {
-                    return date.getDay();
+                    result =  date.getDay();
                 } else {
-                    return date.getUTCDay();
+                    result =  date.getUTCDay();
                 }
+
+                var days = [6,0,1,2,3,4,5];//this is a hack to makes week start from Mon (btw can be refactored)
+                return days[result];
             }
         };
 
         return exports;
     })
 
-    .directive('calendar', function (CalendarFactory, DAY_EVENT_FIELDS) {
+    .directive('calendar', function (CalendarFactory, DAY_EVENT_FIELDS, DAYS_OF_WEEK) {
         return {
             restrict: 'E',
             replace: true,
@@ -220,6 +234,7 @@ angular.module('outstanding.calendar', [])
                 (function _init() {
                     scope.CalendarFactory = CalendarFactory;
                     scope.DAY_EVENT_FIELDS = DAY_EVENT_FIELDS;
+                    scope.DAYS_OF_WEEK = DAYS_OF_WEEK;
                 })();
 
             }
