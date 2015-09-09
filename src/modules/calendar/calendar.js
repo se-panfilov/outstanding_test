@@ -96,7 +96,7 @@ angular.module('outstanding.calendar', [])
                 if (yearNum === _getYearNumber(datetime)) {
                     var monthNum = _getMonthNumber(datetime, true);
                     if (!result[monthNum]) {
-                        result[monthNum] = _getDays(monthNum, yearNum);
+                        result[monthNum] = _getDays(monthNum - 1, yearNum);
                     }
                 }
             }
