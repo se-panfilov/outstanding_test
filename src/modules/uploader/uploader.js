@@ -44,6 +44,4 @@ angular.module('outstanding.uploader', [])
             }
         };
     })
-
-
 ;

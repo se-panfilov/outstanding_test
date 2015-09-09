@@ -473,8 +473,6 @@ angular.module('outstanding.uploader', [])
             }
         };
     })
-
-
 ;
 
 'use strict';
